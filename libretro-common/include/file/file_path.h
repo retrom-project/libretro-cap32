@@ -212,7 +212,13 @@ bool path_is_absolute(const char *path);
  * E.g.: in_path = "/foo/bar/baz/boo.c", replace = ""     =>
  * out_path = "/foo/bar/baz/boo"
  */
+#ifdef __EMSCRIPTEN__
+/* Static EmulatorJS builds link RetroArch's newer libretro-common, whose
+ * return type is size_t. A void declaration produces a Wasm signature trap. */
+size_t fill_pathname(char *out_path, const char *in_path,
+#else
 void fill_pathname(char *out_path, const char *in_path,
+#endif
       const char *replace, size_t size);
 
 /**
