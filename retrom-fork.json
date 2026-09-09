@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "forkRepository": "https://github.com/retrom-project/libretro-cap32",
+  "defaultBranch": "retrom/g310cc579b79b",
+  "upstreamMirrorBranch": "master",
+  "upstreams": [
+    {
+      "role": "emulatorjs-core",
+      "repository": "https://github.com/EmulatorJS/libretro-cap32",
+      "refType": "COMMIT",
+      "ref": "310cc579b79b6051b378b192224b325a73437c9b",
+      "commit": "310cc579b79b6051b378b192224b325a73437c9b"
+    },
+    {
+      "role": "emulatorjs-retroarch-linker",
+      "repository": "https://github.com/EmulatorJS/RetroArch",
+      "refType": "COMMIT",
+      "ref": "6dd4353937ef48b6ec0bfbdbb15d1c5992d86927",
+      "commit": "6dd4353937ef48b6ec0bfbdbb15d1c5992d86927"
+    }
+  ],
+  "adapterAbi": "emulatorjs-state-v1",
+  "releaseAssets": [
+    "cap32-wasm.data",
+    "COPYING",
+    "source.tar.gz",
+    "rpg-runtime-release.json"
+  ]
+}

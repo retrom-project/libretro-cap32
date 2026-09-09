@@ -29,3 +29,7 @@ tests/
 tests-db/
 unit-tests/test-db
 unit-tests/autorun
+
+# Retrom reproducible local builds
+build/
+__pycache__/
