@@ -13,8 +13,13 @@ build. It needs no ROM or BIOS and fails with the unpatched declaration.
 and RetroArch commit, detects source edits during compilation and emits the
 core, notices, complete core sources and an identity/digest descriptor.
 
-This is an unpublished local candidate. Before any release, verify ordinary
+Local candidates remain unpublished until explicitly promoted. Before any release, verify ordinary
 Retrom import, review preview, gameplay, nonempty snapshot, fresh-Launch
 restore, input after restore, and exit. Do not publish test games or firmware.
 The source repository URL is the intended downstream identity; no remote fork,
 maintenance branch or release is created by the candidate builder.
+
+Formal publication uses `build-release.py --output <absolute-empty-directory> --tag <tag>`.
+The workflow runs the same native regression and pinned Web build for PRs and tags.
+Only annotated tags reachable from the declared maintenance branch may publish;
+release assets include the complete core source archive, license and integrity report.
