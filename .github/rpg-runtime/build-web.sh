@@ -9,6 +9,7 @@ work=$(mktemp -d "$root/build/retrom-cap32-web.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 mkdir -p "$work/raw" "$work/build"
 python3 "$root/.github/rpg-runtime/test-path-abi.py"
+python3 "$root/.github/rpg-runtime/test-plus-snapshot.py"
 source_digest=$(python3 "$root/.github/rpg-runtime/candidate_descriptor.py" digest "$output")
 python3 "$root/.github/rpg-runtime/candidate_descriptor.py" paths "$output" > "$work/source-files"
 tar -C "$root" --null --verbatim-files-from -T "$work/source-files" -cf "$work/source.tar"

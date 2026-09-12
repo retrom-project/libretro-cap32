@@ -23,3 +23,15 @@ Formal publication uses `build-release.py --output <absolute-empty-directory> --
 The workflow runs the same native regression and pinned Web build for PRs and tags.
 Only annotated tags reachable from the declared maintenance branch may publish;
 release assets include the complete core source archive, license and integrity report.
+
+
+GX4000 / CPC Plus libretro snapshots append a fixed-size `CPPLUS02` extension
+containing explicit little-endian ASIC fields, sprite and register memory,
+DMA progress, palette, cartridge mapping and split-screen state. Loading a
+legacy Plus SNA without this extension is rejected before resetting the core:
+its missing ASIC state cannot be recovered. Ordinary CPC snapshots and SNA
+file import/export keep their existing format. The source snapshot includes
+`test-plus-snapshot.py`, which exercises real native libretro save/restore,
+truncation/unknown-format rejection before mutation, and ordinary CPC
+compatibility without external ROM or BIOS files. The pinned web candidate
+build runs both this regression and the path ABI regression.

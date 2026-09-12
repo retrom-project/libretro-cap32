@@ -122,6 +122,7 @@ int emu_status = COMPUTER_OFF;
 
 //CAP32 DEF BEGIN
 #include "cap32.h"
+#include "plus_snapshot.h"
 #include "slots.h"
 //#include "z80.h"
 extern t_CPC CPC;
@@ -1491,15 +1492,20 @@ size_t retro_serialize_size(void)
 {
    int dwSnapSize = sizeof(t_SNA_header);
    dwSnapSize += get_ram_size();
+   if (CPC.model == CPC_MODEL_PLUS) dwSnapSize += PLUS_SNAPSHOT_SIZE;
    return dwSnapSize;
 }
 
 bool retro_serialize(void *data, size_t size)
 {
    int error;
+   if (!data || size < retro_serialize_size()) return false;
    error = snapshot_save_mem((uint8_t *) data, size);
-   if(!error)
+   if(!error) {
+      if (CPC.model == CPC_MODEL_PLUS)
+         return plus_snapshot_save((uint8_t *)data + sizeof(t_SNA_header) + get_ram_size(), PLUS_SNAPSHOT_SIZE);
       return true;
+   }
 
    LOGI("[retro_serialize] SNA-serialized: error %d\n", error);
    return false;
@@ -1507,7 +1513,17 @@ bool retro_serialize(void *data, size_t size)
 
 bool retro_unserialize(const void *data, size_t size)
 {
-   return !snapshot_load_mem((uint8_t *) data, size);
+   t_SNA_header header;
+   size_t base;
+   if (!data || size < sizeof(header)) return false;
+   memcpy(&header, data, sizeof(header));
+   if (header.cpc_model != CPC_MODEL_PLUS)
+      return !snapshot_load_mem((uint8_t *)data, size);
+   base = sizeof(header) + ((size_t)header.ram_size[0] + (size_t)header.ram_size[1] * 256) * 1024;
+   /* Reject incomplete Plus states before the ordinary SNA loader resets ASIC. */
+   if (base > size || !plus_snapshot_valid((const uint8_t *)data + base, size - base)) return false;
+   if (snapshot_load_mem((uint8_t *)data, base)) return false;
+   return plus_snapshot_load((const uint8_t *)data + base, size - base);
 }
 
 void *retro_get_memory_data(unsigned id)
