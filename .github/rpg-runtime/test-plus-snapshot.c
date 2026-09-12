@@ -107,6 +107,13 @@ int main(void)
    assert(!retro_unserialize(state, size));
    assert(!asic.locked && pbRAM[0x4567] == 0x55);
    state[ordinary] ^= 1;
+   /* Sprite pixels index the 32-entry hardware palette directly. */
+   size_t sprite_pixel = ordinary + 8 + 7 * 4;
+   uint8_t original_pixel = state[sprite_pixel];
+   state[sprite_pixel] = 255;
+   assert(!retro_unserialize(state, size));
+   assert(!asic.locked && pbRAM[0x4567] == 0x55);
+   state[sprite_pixel] = original_pixel;
    assert(retro_unserialize(state, size));
    uint8_t *again = malloc(size); assert(again);
    assert(retro_serialize(again, size));
