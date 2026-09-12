@@ -20,6 +20,7 @@ SOURCES_C := \
 	$(CORE_DIR)/cap32/tape.c \
 	$(CORE_DIR)/cap32/cart.c \
 	$(CORE_DIR)/cap32/asic.c \
+	$(CORE_DIR)/cap32/plus_snapshot.c \
 	$(CORE_DIR)/cap32/z80.c \
 	$(CORE_DIR)/cap32/kbdauto.c \
 	$(CORE_DIR)/cap32/lightgun/gunstick.c \
