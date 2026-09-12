@@ -80,6 +80,10 @@ static bool decode(struct plus_state *s, const uint8_t *data, size_t size)
        s->chip.hscroll < 0 || s->chip.hscroll > 15 ||
        s->chip.vscroll < 0 || s->chip.vscroll > 7 ||
        s->lower_bank > 2 || s->register_page > 1 || s->upper_page > 31) return false;
+   /* Pixels feed GateArray.palette directly; corrupted indices must not escape it. */
+   for (size_t n = 0; n < sizeof(s->chip.sprites); n++) {
+      if (((const uint8_t *)s->chip.sprites)[n] > 31) return false;
+   }
    for (unsigned n = 0; n < ASIC_SPRITES; n++) {
       if (s->chip.sprites_mag_x[n] < 0 || s->chip.sprites_mag_x[n] > 4 ||
           s->chip.sprites_mag_y[n] < 0 || s->chip.sprites_mag_y[n] > 4) return false;
